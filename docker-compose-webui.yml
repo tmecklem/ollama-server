@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui-data:/app/backend/data
+    environment:
+      - OLLAMA_API_BASE_URL=http://ollama:11434
+    networks:
+      - ollama-network
+    restart: unless-stopped
+    depends_on:
+      - ollama
+
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    container_name: ollama-server
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ollama-network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_NUM_GPU=6
+      - CUDA_VISIBLE_DEVICES=0,1,2,3,4,5
+
+volumes:
+  ollama_data:
+  open-webui-data:
+
+networks:
+  ollama-network:
+    driver: bridge
