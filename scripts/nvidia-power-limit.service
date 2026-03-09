@@ -1,0 +1,15 @@
+[Unit]
+Description=Set NVIDIA GPU Power Limits
+After=multi-user.target
+
+[Service]
+Type=oneshot
+# Enable persistence mode first
+ExecStartPre=/usr/bin/nvidia-smi -pm 1
+# Set power limits for both GPUs
+ExecStart=/usr/bin/nvidia-smi -i 0 -pl 280
+ExecStart=/usr/bin/nvidia-smi -i 1 -pl 280
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

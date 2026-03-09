@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(nvidia-smi:*)",
-      "Bash(lspci:*)"
+      "Bash(lspci:*)",
+      "Bash(curl:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker volume:*)",
+      "Bash(docker compose:*)"
     ],
     "deny": [],
     "ask": []

@@ -38,8 +38,8 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
       - OLLAMA_KEEP_ALIVE=24h
-      - OLLAMA_NUM_GPU=6
-      - CUDA_VISIBLE_DEVICES=0,1,2,3,4,5
+      - OLLAMA_NUM_GPU=2
+      - CUDA_VISIBLE_DEVICES=0,1
 
 volumes:
   ollama_data:

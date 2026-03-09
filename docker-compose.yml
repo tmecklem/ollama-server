@@ -21,8 +21,9 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
       - OLLAMA_KEEP_ALIVE=24h
-      - OLLAMA_NUM_GPU=6
-      - CUDA_VISIBLE_DEVICES=0,1,2,3,4,5
+      - OLLAMA_NUM_GPU=2
+      - OLLAMA_NUM_PARALLEL=1
+      - CUDA_VISIBLE_DEVICES=0,1
 
   vllm:
     build:
@@ -42,13 +43,13 @@ services:
               capabilities: [gpu]
     restart: unless-stopped
     environment:
-      - CUDA_VISIBLE_DEVICES=0,1,2,3,4,5
-      - TENSOR_PARALLEL_SIZE=6
+      - CUDA_VISIBLE_DEVICES=0,1
+      - TENSOR_PARALLEL_SIZE=2
     command: [
       "--model", "/models/model-name",
       "--host", "0.0.0.0",
       "--port", "8000",
-      "--tensor-parallel-size", "6",
+      "--tensor-parallel-size", "2",
       "--gpu-memory-utilization", "0.95",
       "--max-model-len", "8192"
     ]
